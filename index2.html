@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LielShop - החנות  של ליאל </title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  background: linear-gradient(270deg, #ff6ec7, #2196f3, #ffeb3b, #4caf50);
+  background-size: 800% 800%;
+  animation: GradientShift 20s ease infinite;
+  direction: rtl;
+}
+
+@keyframes GradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+header {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 15px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+h1 {
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+  font-size: 28px;
+  margin: 0;
+}
+
+.search-box {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  width: 250px;
+  font-size: 14px;
+  outline: none;
+}
+
+.cart-button {
+  background: linear-gradient(45deg, #ff6ec7, #ff3d8b);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(255, 110, 199, 0.4);
+}
+
+.cart-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 110, 199, 0.6);
+}
+
+.cart-badge {
+  background: #fff;
+  color: #ff3d8b;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.filters {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 1400px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filter-item label {
+  font-size: 12px;
+  color: #666;
+  font-weight: bold;
+}
+
+.filter-item select,
+.filter-item input {
+  padding: 10px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.reset-button {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 18px;
+}
+
+.products-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.product-image {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.1);
+}
+
+.stock-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(76, 175, 80, 0.9);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.stock-badge.low {
+  background: rgba(255, 152, 0, 0.9);
+}
+
+.stock-badge.out {
+  background: rgba(244, 67, 54, 0.9);
+}
+
+.product-info {
+  padding: 20px;
+}
+
+.product-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.product-price {
+  color: #4caf50;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.product-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.add-button {
+  flex: 1;
+  background: linear-gradient(45deg, #4caf50, #45a049);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.add-button:hover {
+  transform: scale(1.05);
+}
+
+.add-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.view-button {
+  background: #2196f3;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: white;
+  margin: 3% auto;
+  max-width: 600px;
+  border-radius: 20px;
+  overflow: hidden;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-image {
+  position: relative;
+  height: 300px;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.modal-body h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.modal-price {
+  font-size: 32px;
+  color: #4caf50;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.modal-stock {
+  font-size: 16px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #e8f5e9;
+  display: inline-block;
+}
+
+.quantity-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.quantity-box button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: #f0f0f0;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.quantity-box input {
+  width: 60px;
+  text-align: center;
+  font-size: 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.modal-add-button {
+  width: 100%;
+  background: linear-gradient(45deg, #4caf50, #45a049);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  left: -450px;
+  width: 450px;
+  height: 100%;
+  background: white;
+  box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+  transition: left 0.3s;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-sidebar.open {
+  left: 0;
+}
+
+.cart-header {
+  background: linear-gradient(45deg, #ff6ec7, #ff3d8b);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cart-item-info {
+  flex: 1;
+}
+
+.cart-item-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.cart-item-price {
+  color: #4caf50;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.cart-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cart-controls button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: #f0f0f0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.remove-button {
+  background: #f44336 !important;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.cart-footer {
+  padding: 20px;
+  border-top: 2px solid #e0e0e0;
+  background: #f9f9f9;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.checkout-button {
+  width: 100%;
+  background: linear-gradient(45deg, #ff6ec7, #ff3d8b);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 50px 20px;
+  color: #999;
+}
+
+.notification {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(45deg, #4caf50, #45a049);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 50px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  z-index: 4000;
+  font-weight: bold;
+  display: none;
+}
+
+.snowflake {
+  position: fixed;
+  top: -10px;
+  z-index: 9999;
+  user-select: none;
+  pointer-events: none;
+  color: white;
+  font-size: 1em;
+  animation: fall linear infinite;
+  text-shadow: 0 0 5px rgba(255,255,255,0.8);
+}
+
+@keyframes fall {
+  to { transform: translateY(100vh) translateX(50px) rotate(360deg); }
+}
+
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 14px;
+  color: white;
+  background: rgba(0,0,0,0.3);
+  margin-top: 50px;
+  text-shadow: 1px 1px 3px black;
+}
+
+.email-status {
+  font-size: 12px;
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  display: none;
+  font-weight: bold;
+}
+.email-status.checking {
+  display: block;
+  background: #fff8e1;
+  color: #f57c00;
+}
+.email-status.valid {
+  display: block;
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.email-status.invalid {
+  display: block;
+  background: #ffebee;
+  color: #c62828;
+}
+
+.city-badge {
+  display: inline-block;
+  background: linear-gradient(45deg, #ff6ec7, #ff3d8b);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.address-section-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ff3d8b;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ffe0f0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+}
+
+.field-label .required-star {
+  color: #f44336;
+  margin-right: 2px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  direction: rtl;
+}
+
+.form-input:focus {
+  border-color: #ff6ec7;
+}
+
+@media (max-width: 768px) {
+  .cart-sidebar {
+    width: 100%;
+    left: -100%;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .form-row-2, .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+    <h1>🛍️ LielShop - החנות של ליאל</h1>
+    <div style="display: flex; gap: 15px; align-items: center;">
+      <input type="text" class="search-box" id="searchBox" placeholder="חפש מוצר...">
+      <button class="cart-button" id="cartBtn">
+        🛒 עגלה
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="filters">
+  <div class="filter-item">
+    <label>מיון:</label>
+    <select id="sortSelect">
+      <option value="default">ברירת מחדל</option>
+      <option value="price-low">מחיר: נמוך לגבוה</option>
+      <option value="price-high">מחיר: גבוה לנמוך</option>
+      <option value="name">שם: א-ת</option>
+    </select>
+  </div>
+
+  <div class="filter-item">
+    <label>מחיר מינימלי:</label>
+    <input type="number" id="minPrice" placeholder="0" min="0">
+  </div>
+
+  <div class="filter-item">
+    <label>מחיר מקסימלי:</label>
+    <input type="number" id="maxPrice" placeholder="100" min="0">
+  </div>
+
+  <div class="filter-item">
+    <label>זמינות:</label>
+    <select id="stockFilter">
+      <option value="all">הכל</option>
+      <option value="in-stock">במלאי בלבד</option>
+      <option value="low-stock">מלאי נמוך</option>
+    </select>
+  </div>
+
+  <button class="reset-button" id="resetBtn">🔄 אפס</button>
+</div>
+
+<div class="products-container">
+  <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <div class="modal-image">
+      <button class="close-button" id="closeModal">✕</button>
+      <img id="modalImg" src="" alt="">
+    </div>
+    <div class="modal-body">
+      <h2 id="modalName"></h2>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-stock" id="modalStock"></div>
+
+      <div class="quantity-box">
+        <button id="decreaseBtn">-</button>
+        <input type="number" id="modalQuantity" value="1" min="1" readonly>
+        <button id="increaseBtn">+</button>
+      </div>
+
+      <button class="modal-add-button" id="modalAddBtn">🛒 הוסף לעגלה</button>
+    </div>
+  </div>
+</div>
+
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>🛒 העגלה שלי</h2>
+    <button class="cart-close" id="closeCart">✕</button>
+  </div>
+
+  <div class="cart-items" id="cartItems">
+    <div class="empty-cart">
+      <div style="font-size: 80px; margin-bottom: 20px;">🛒</div>
+      <p>העגלה ריקה</p>
+    </div>
+  </div>
+
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>סה"כ:</span>
+      <span id="cartTotal">₪0</span>
+    </div>
+    <button class="checkout-button" id="checkoutBtn">💳 המשך לתשלום</button>
+  </div>
+</div>
+
+<div class="notification" id="notification"></div>
+
+<!-- Checkout Modal -->
+<div class="modal" id="checkoutModal" style="display: none;">
+  <div class="modal-content" style="max-width: 560px;">
+    <div class="modal-body">
+      <h2 style="text-align: center; color: #ff6ec7; margin-bottom: 20px;">📋 פרטים לתשלום</h2>
+
+      <form id="checkoutForm">
+
+        <!-- Personal Details -->
+        <div class="form-row-2">
+          <div>
+            <label class="field-label">שם פרטי <span class="required-star">*</span></label>
+            <input type="text" id="firstName" required class="form-input" placeholder="שם פרטי">
+          </div>
+          <div>
+            <label class="field-label">שם משפחה <span class="required-star">*</span></label>
+            <input type="text" id="lastName" required class="form-input" placeholder="שם משפחה">
+          </div>
+        </div>
+
+        <div class="form-row-2" style="margin-bottom: 20px;">
+          <div>
+            <label class="field-label">אימייל <span class="required-star">*</span></label>
+            <input type="email" id="customerEmail" required class="form-input" placeholder="example@gmail.com">
+            <div class="email-status" id="emailStatus"></div>
+          </div>
+          <div>
+            <label class="field-label">מספר טלפון <span class="required-star">*</span></label>
+            <input type="tel" id="customerPhone" required class="form-input" placeholder="050-1234567">
+          </div>
+        </div>
+
+        <!-- Delivery Address -->
+        <div class="address-section-title">
+          📦 כתובת למשלוח
+        </div>
+
+        <!-- City - fixed to Beer Yaakov -->
+        <div style="margin-bottom: 15px;">
+          <label class="field-label">עיר <span class="required-star">*</span></label>
+          <div style="position: relative;">
+            <input type="text" id="customerCity" value="באר יעקב" readonly required class="form-input"
+                   style="background: #f0f8ff; color: #2196f3; font-weight: bold; cursor: not-allowed;">
+            <span class="city-badge" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 11px;">
+              📍 משלוח לבאר יעקב בלבד
+            </span>
+          </div>
+        </div>
+
+        <!-- Street -->
+        <div style="margin-bottom: 15px;">
+          <label class="field-label">רחוב <span class="required-star">*</span></label>
+          <input type="text" id="customerStreet" required class="form-input" placeholder="שם הרחוב">
+        </div>
+
+        <!-- House + Entry + Apartment + Floor -->
+        <div class="form-row-2">
+          <div>
+            <label class="field-label">מספר בית <span class="required-star">*</span></label>
+            <input type="text" id="customerHouseNumber" required class="form-input" placeholder="מספר בית">
+          </div>
+          <div>
+            <label class="field-label">קוד כניסה</label>
+            <input type="text" id="customerEntryCode" class="form-input" placeholder="קוד כניסה (אם יש)">
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div>
+            <label class="field-label">דירה</label>
+            <input type="text" id="customerApartment" class="form-input" placeholder="מספר דירה">
+          </div>
+          <div>
+            <label class="field-label">קומה</label>
+            <input type="text" id="customerFloor" class="form-input" placeholder="קומה">
+          </div>
+        </div>
+
+        <!-- Note -->
+        <div style="margin-bottom: 20px;">
+          <label class="field-label">הערה לשליח</label>
+          <textarea id="customerNote" rows="2"
+                    class="form-input"
+                    style="resize: vertical;"
+                    placeholder="הערות נוספות לשליח..."></textarea>
+        </div>
+
+        <!-- Order Summary -->
+        <div style="background: #f0f8ff; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+            <span style="font-weight: bold;">סה"כ פריטים:</span>
+            <span id="checkoutItemCount">0</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; color: #4caf50;">
+            <span>סה"כ לתשלום:</span>
+            <span id="checkoutTotal">₪0</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="button" id="cancelCheckout"
+                  style="flex: 1; background: #f44336; color: white; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;">
+            ❌ ביטול
+          </button>
+          <button type="submit" id="confirmCheckout"
+                  style="flex: 2; background: linear-gradient(45deg, #4caf50, #45a049); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;">
+            ✅ אישור ושליחה
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2026 LielShop - כל הזכויות שמורות לLielShop | נוצר  על ידי לירוי חיים כהן
+  <br>
+</footer>
+
+<script>
+const products = [
+  {id: 1, name: 'סקווישי דונאטס', price: 25, stock: 2, img: 'https://bowandarrow5.com/tn_Cat_486091_19441.webp'},
+  {id: 2, name: 'סקווישי תרנגול', price: 25, stock: 1, img: 'https://files.cdn-files-a.com/uploads/11338860/2000_6971fe2ad45af.jpg'},
+  {id: 3, name: 'סקווישי קרח סגול', price: 20, stock: 1, img: 'https://assets.icanet.se/image/upload/v1756122785/sipv6meb2dskj4lqago3.png'},
+  {id: 4, name: 'סקווישי אבטיח', price: 25, stock: 1, img: 'https://img.joomcdn.net/3369954d4115442b7a8b91c0181fc3ab82cddd0a_original.jpeg'},
+  {id: 5, name: 'סקווישי פנדה', price: 15, stock: 1, img: 'https://cdn.cashcow.co.il/images/5e8d3c62-c0e4-4d91-961a-09bf8ce6d931.jpg'},
+  {id: 6, name: 'סקווישי גבינה', price: 7, stock: 1, img: 'https://img.joomcdn.net/928255c914e5f8f7a6ecf2ecb784303467c1222d_original.jpeg'},
+  {id: 7, name: 'סקווישי מתנה', price: 6, stock: 2, img: 'https://s.alicdn.com/@sc04/kf/H75c90c7c409f4338a3b2f71575bf6f1dm.png_200x200.jpg'},
+  {id: 8, name: 'סקווישי קסטה', price: 30, stock: 1, img: 'https://abc-cosmos.com/wp-content/uploads/2025/10/JJ-41984_01.jpg'}
+];
+
+let cart = [];
+let filteredProducts = [...products];
+let currentProduct = null;
+
+function loadCart() {
+  const saved = localStorage.getItem('lielshop_cart');
+  if (saved) {
+    cart = JSON.parse(saved);
+    updateCartUI();
+  }
+}
+
+function saveCart() {
+  localStorage.setItem('lielshop_cart', JSON.stringify(cart));
+}
+
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = '';
+
+  filteredProducts.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+
+    let stockClass = 'stock-badge';
+    let stockText = `במלאי: ${p.stock}`;
+
+    if (p.stock === 0) {
+      stockClass += ' out';
+      stockText = 'אזל';
+    } else if (p.stock <= 2) {
+      stockClass += ' low';
+    }
+
+    card.innerHTML = `
+      <div class="product-image">
+        <img src="${p.img}" alt="${p.name}">
+        <div class="${stockClass}">${stockText}</div>
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">₪${p.price}</div>
+        <div class="product-buttons">
+          <button class="add-button" data-id="${p.id}" ${p.stock === 0 ? 'disabled' : ''}>
+            ${p.stock === 0 ? 'לא זמין' : '🛒 הוסף'}
+          </button>
+          <button class="view-button" data-id="${p.id}">👁️</button>
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+
+  document.querySelectorAll('.add-button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = parseInt(this.getAttribute('data-id'));
+      quickAdd(id);
+    });
+  });
+
+  document.querySelectorAll('.view-button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = parseInt(this.getAttribute('data-id'));
+      openModal(id);
+    });
+  });
+}
+
+function quickAdd(productId) {
+  const product = products.find(p => p.id === productId);
+  if (!product || product.stock === 0) return;
+  addToCart(product, 1);
+  showNotification(`${product.name} נוסף לעגלה! 🎉`);
+}
+
+function openModal(productId) {
+  currentProduct = products.find(p => p.id === productId);
+  if (!currentProduct) return;
+
+  document.getElementById('modalImg').src = currentProduct.img;
+  document.getElementById('modalName').textContent = currentProduct.name;
+  document.getElementById('modalPrice').textContent = `₪${currentProduct.price}`;
+
+  const stockEl = document.getElementById('modalStock');
+  if (currentProduct.stock > 0) {
+    stockEl.textContent = `במלאי: ${currentProduct.stock} יחידות`;
+    stockEl.style.background = '#e8f5e9';
+    stockEl.style.color = '#4caf50';
+  } else {
+    stockEl.textContent = 'אזל מהמלאי';
+    stockEl.style.background = '#ffebee';
+    stockEl.style.color = '#f44336';
+  }
+
+  document.getElementById('modalQuantity').value = 1;
+  document.getElementById('modalQuantity').max = currentProduct.stock;
+  document.getElementById('productModal').style.display = 'block';
+}
+
+function closeModalFunc() {
+  document.getElementById('productModal').style.display = 'none';
+  currentProduct = null;
+}
+
+function addToCart(product, quantity) {
+  const existing = cart.find(item => item.id === product.id);
+
+  if (existing) {
+    const newQty = existing.quantity + quantity;
+    if (newQty <= product.stock) {
+      existing.quantity = newQty;
+    } else {
+      showNotification(`ניתן להוסיף רק ${product.stock} יחידות`);
+      return;
+    }
+  } else {
+    cart.push({
+      ...product,
+      quantity: Math.min(quantity, product.stock)
+    });
+  }
+
+  updateCartUI();
+  saveCart();
+}
+
+function updateCartUI() {
+  const itemsEl = document.getElementById('cartItems');
+  const badge = document.getElementById('cartBadge');
+  const total = document.getElementById('cartTotal');
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = `
+      <div class="empty-cart">
+        <div style="font-size: 80px; margin-bottom: 20px;">🛒</div>
+        <p>העגלה ריקה</p>
+      </div>
+    `;
+    badge.textContent = '0';
+    total.textContent = '₪0';
+    return;
+  }
+
+  let html = '';
+  let totalPrice = 0;
+  let totalItems = 0;
+
+  cart.forEach(item => {
+    totalPrice += item.price * item.quantity;
+    totalItems += item.quantity;
+
+    html += `
+      <div class="cart-item">
+        <img src="${item.img}" alt="${item.name}">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">₪${item.price} × ${item.quantity}</div>
+          <div class="cart-controls">
+            <button data-id="${item.id}" data-action="decrease">-</button>
+            <span>${item.quantity}</span>
+            <button data-id="${item.id}" data-action="increase">+</button>
+            <button class="remove-button" data-id="${item.id}" data-action="remove">🗑️</button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  itemsEl.innerHTML = html;
+  badge.textContent = totalItems;
+  total.textContent = `₪${totalPrice}`;
+
+  document.querySelectorAll('.cart-controls button').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const id = parseInt(this.getAttribute('data-id'));
+      const action = this.getAttribute('data-action');
+      handleCartAction(id, action);
+    });
+  });
+}
+
+function handleCartAction(productId, action) {
+  const item = cart.find(i => i.id === productId);
+  const product = products.find(p => p.id === productId);
+
+  if (action === 'decrease') {
+    if (item.quantity > 1) {
+      item.quantity--;
+    } else {
+      cart = cart.filter(i => i.id !== productId);
+    }
+  } else if (action === 'increase') {
+    if (item.quantity < product.stock) {
+      item.quantity++;
+    } else {
+      showNotification(`ניתן להוסיף רק ${product.stock} יחידות`);
+      return;
+    }
+  } else if (action === 'remove') {
+    cart = cart.filter(i => i.id !== productId);
+  }
+
+  updateCartUI();
+  saveCart();
+}
+
+function toggleCartFunc() {
+  document.getElementById('cartSidebar').classList.toggle('open');
+}
+
+function checkoutFunc() {
+  if (cart.length === 0) {
+    showNotification('העגלה ריקה!');
+    return;
+  }
+
+  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  document.getElementById('checkoutItemCount').textContent = totalItems;
+  document.getElementById('checkoutTotal').textContent = `₪${total}`;
+  document.getElementById('checkoutModal').style.display = 'block';
+  document.getElementById('checkoutForm').reset();
+  // Keep city fixed
+  document.getElementById('customerCity').value = 'באר יעקב';
+}
+
+async function sendOrderWithDetails() {
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('customerEmail').value.trim();
+  const phone = document.getElementById('customerPhone').value.trim();
+  const city = document.getElementById('customerCity').value.trim();
+  const street = document.getElementById('customerStreet').value.trim();
+  const houseNumber = document.getElementById('customerHouseNumber').value.trim();
+  const entryCode = document.getElementById('customerEntryCode').value.trim();
+  const apartment = document.getElementById('customerApartment').value.trim();
+  const floor = document.getElementById('customerFloor').value.trim();
+  const note = document.getElementById('customerNote').value.trim();
+
+  if (!firstName || !lastName || !email || !phone) {
+    showNotification('❌ נא למלא את כל שדות החובה (*)');
+    return;
+  }
+
+  // Israeli phone validation: 05X-XXXXXXX or 05XXXXXXXX
+  const phoneClean = phone.replace(/[-\s]/g, '');
+  const phoneRegex = /^05[0-9]{8}$/;
+  if (!phoneRegex.test(phoneClean)) {
+    showNotification('❌ מספר טלפון לא תקין — נא להזין מספר ישראלי (05X-XXXXXXX)');
+    document.getElementById('customerPhone').style.borderColor = '#f44336';
+    document.getElementById('customerPhone').focus();
+    return;
+  } else {
+    document.getElementById('customerPhone').style.borderColor = '#4caf50';
+  }
+
+  if (!street || !houseNumber) {
+    showNotification('❌ נא למלא רחוב ומספר בית');
+    return;
+  }
+
+  const addressParts = [
+    `עיר: ${city}`,
+    `רחוב: ${street} ${houseNumber}`,
+    entryCode ? `קוד כניסה: ${entryCode}` : '',
+    apartment ? `דירה: ${apartment}` : '',
+    floor ? `קומה: ${floor}` : '',
+    note ? `הערה: ${note}` : ''
+  ].filter(Boolean).join('\n');
+
+  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const itemsList = cart.map(item => `${item.name} - כמות: ${item.quantity} - מחיר יחידה: ₪${item.price} - סה"כ: ₪${item.price * item.quantity}`).join('\n');
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const confirmBtn = document.getElementById('confirmCheckout');
+  const originalText = confirmBtn.textContent;
+  confirmBtn.textContent = '⏳ שולח הזמנה...';
+  confirmBtn.disabled = true;
+
+  try {
+    const shopEmailBody = `
+🛍️ הזמנה חדשה מ-LielShop
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 פרטי הלקוח:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+שם מלא: ${firstName} ${lastName}
+אימייל: ${email}
+טלפון: ${phone}
+
+📍 כתובת למשלוח:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${addressParts}
+
+📅 תאריך הזמנה: ${new Date().toLocaleString('he-IL')}
+
+🛒 פריטים שהוזמנו:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${itemsList}
+
+📊 סיכום הזמנה:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• סה"כ פריטים: ${totalItems}
+• סה"כ לתשלום: ₪${total}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+נשלח אוטומטית מאתר LielShop
+    `;
+
+    const customerEmailBody = `
+שלום ${firstName},
+
+תודה על ההזמנה ב-LielShop! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 אישור הזמנה
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+מספר הזמנה: #${Date.now()}
+תאריך: ${new Date().toLocaleString('he-IL')}
+
+🛒 המוצרים שהזמנת:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${itemsList}
+
+💰 סיכום תשלום:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+סה"כ פריטים: ${totalItems}
+סה"כ לתשלום: ₪${total}
+
+📦 פרטי משלוח:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+שם: ${firstName} ${lastName}
+טלפון: ${phone}
+${addressParts}
+
+ההזמנה שלך התקבלה ותטופל בהקדם!
+נחזור אליך בהקדם בנוגע לאישור וזמני משלוח.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+שאלות? צור קשר:
+📧 GoldenLiroy@
+
+תודה שבחרת ב-LielShop! 💝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LielShop - החנות שלך לסקווישיז
+    `;
+
+    const formDataShop = new FormData();
+    formDataShop.append('_subject', `🛍️ הזמנה חדשה מ-${firstName} ${lastName}`);
+    formDataShop.append('_replyto', 'LielShop@bus.com');
+    formDataShop.append('_cc', 'LielShop@bus.com');
+    formDataShop.append('message', shopEmailBody);
+
+    const shopResponse = await fetch('https://formsubmit.co/ajax/Liroyhaim31@gmail.com', {
+      method: 'POST',
+      body: formDataShop,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    const formDataCustomer = new FormData();
+    formDataCustomer.append('_subject', `✅ אישור הזמנה מ-LielShop - הזמנה #${Date.now()}`);
+    formDataCustomer.append('_replyto', 'LielShop@bus.com');
+    formDataCustomer.append('_cc', 'LielShop@bus.com');
+    formDataCustomer.append('message', customerEmailBody);
+
+    const customerResponse = await fetch(`https://formsubmit.co/ajax/${email}`, {
+      method: 'POST',
+      body: formDataCustomer,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (shopResponse.ok && customerResponse.ok) {
+      document.getElementById('checkoutModal').style.display = 'none';
+      showNotification('✅ ההזמנה נשלחה בהצלחה!');
+
+      alert(`🎉 תודה על הרכישה ${firstName}!
+
+ההזמנה נשלחה בהצלחה!
+
+📍 כתובת משלוח:
+${addressParts}
+
+💰 סה"כ לתשלום: ₪${total}
+
+📧 אישור הזמנה נשלח ל: ${email}
+📱 ניצור קשר בטלפון: ${phone}
+
+תודה שבחרת ב-LielShop! 💝`);
+
+      cart = [];
+      updateCartUI();
+      saveCart();
+      toggleCartFunc();
+    } else {
+      throw new Error('שגיאה בשליחה');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    showNotification('❌ שגיאה בשליחת המייל, מנסה שיטה חלופית...');
+
+    const mailtoBody = `הזמנה חדשה:%0D%0A%0D%0Aפרטי לקוח:%0D%0Aשם: ${firstName} ${lastName}%0D%0Aאימייל: ${email}%0D%0Aטלפון: ${phone}%0D%0A%0D%0Aכתובת:%0D%0A${encodeURIComponent(addressParts)}%0D%0A%0D%0Aפריטים:%0D%0A${encodeURIComponent(itemsList)}%0D%0A%0D%0Aסה"כ: ₪${total}`;
+    const mailtoLink = `mailto:Liroyhaim31@gmail.com?subject=הזמנה מ-LielShop - ${firstName} ${lastName}&body=${mailtoBody}`;
+    window.open(mailtoLink, '_blank');
+
+    setTimeout(() => {
+      cart = [];
+      updateCartUI();
+      saveCart();
+      document.getElementById('checkoutModal').style.display = 'none';
+      toggleCartFunc();
+    }, 2000);
+  } finally {
+    confirmBtn.textContent = originalText;
+    confirmBtn.disabled = false;
+  }
+}
+
+function applyFilters() {
+  const search = document.getElementById('searchBox').value.toLowerCase();
+  const sort = document.getElementById('sortSelect').value;
+  const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+  const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+  const stockFilter = document.getElementById('stockFilter').value;
+
+  filteredProducts = products.filter(p => {
+    const matchSearch = p.name.toLowerCase().includes(search);
+    const matchPrice = p.price >= minPrice && p.price <= maxPrice;
+    let matchStock = true;
+    if (stockFilter === 'in-stock') matchStock = p.stock > 0;
+    if (stockFilter === 'low-stock') matchStock = p.stock > 0 && p.stock <= 2;
+    return matchSearch && matchPrice && matchStock;
+  });
+
+  if (sort === 'price-low') filteredProducts.sort((a, b) => a.price - b.price);
+  else if (sort === 'price-high') filteredProducts.sort((a, b) => b.price - a.price);
+  else if (sort === 'name') filteredProducts.sort((a, b) => a.name.localeCompare(b.name, 'he'));
+
+  renderProducts();
+}
+
+function resetFilters() {
+  document.getElementById('searchBox').value = '';
+  document.getElementById('sortSelect').value = 'default';
+  document.getElementById('minPrice').value = '';
+  document.getElementById('maxPrice').value = '';
+  document.getElementById('stockFilter').value = 'all';
+  applyFilters();
+}
+
+function showNotification(message) {
+  const notif = document.getElementById('notification');
+  notif.textContent = message;
+  notif.style.display = 'block';
+  setTimeout(() => { notif.style.display = 'none'; }, 3000);
+}
+
+function createSnow() {
+  for(let i = 0; i < 50; i++){
+    const snow = document.createElement("div");
+    snow.className = "snowflake";
+    snow.textContent = "❄";
+    snow.style.left = Math.random() * window.innerWidth + "px";
+    snow.style.fontSize = (Math.random() * 20 + 10) + "px";
+    snow.style.animationDuration = (5 + Math.random() * 5) + "s";
+    snow.style.opacity = Math.random();
+    document.body.appendChild(snow);
+  }
+}
+
+document.getElementById('cartBtn').addEventListener('click', toggleCartFunc);
+document.getElementById('closeCart').addEventListener('click', toggleCartFunc);
+document.getElementById('closeModal').addEventListener('click', closeModalFunc);
+document.getElementById('checkoutBtn').addEventListener('click', checkoutFunc);
+
+document.getElementById('decreaseBtn').addEventListener('click', () => {
+  const input = document.getElementById('modalQuantity');
+  if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+});
+
+document.getElementById('increaseBtn').addEventListener('click', () => {
+  const input = document.getElementById('modalQuantity');
+  const max = parseInt(input.max);
+  if (parseInt(input.value) < max) input.value = parseInt(input.value) + 1;
+});
+
+document.getElementById('modalAddBtn').addEventListener('click', () => {
+  if (!currentProduct || currentProduct.stock === 0) return;
+  const qty = parseInt(document.getElementById('modalQuantity').value);
+  addToCart(currentProduct, qty);
+  showNotification(`${qty}x ${currentProduct.name} נוסף לעגלה! 🎉`);
+  closeModalFunc();
+});
+
+// Live phone format validation
+document.getElementById('customerPhone').addEventListener('input', function() {
+  const clean = this.value.replace(/[-\s]/g, '');
+  if (clean.length === 0) {
+    this.style.borderColor = '#e0e0e0';
+  } else if (/^05[0-9]{8}$/.test(clean)) {
+    this.style.borderColor = '#4caf50';
+  } else {
+    this.style.borderColor = '#f44336';
+  }
+});
+
+document.getElementById('searchBox').addEventListener('input', applyFilters);
+document.getElementById('sortSelect').addEventListener('change', applyFilters);
+document.getElementById('minPrice').addEventListener('input', applyFilters);
+document.getElementById('maxPrice').addEventListener('input', applyFilters);
+document.getElementById('stockFilter').addEventListener('change', applyFilters);
+document.getElementById('resetBtn').addEventListener('click', resetFilters);
+
+document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  sendOrderWithDetails();
+});
+
+document.getElementById('cancelCheckout').addEventListener('click', () => {
+  document.getElementById('checkoutModal').style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  const checkoutModal = document.getElementById('checkoutModal');
+  if (e.target === checkoutModal) checkoutModal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+  const modal = document.getElementById('productModal');
+  if (e.target === modal) closeModalFunc();
+});
+
+loadCart();
+renderProducts();
+createSnow();
+</script>
+
+</body>
+</html> נוצר
